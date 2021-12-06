@@ -1,2 +1,3 @@
-# typescript-crash-course-academind
-Project from tutorial on udemy by Academind
+# Understanding TypeScript - 2022 Edition
+
+## Section 1 - Getting Started
