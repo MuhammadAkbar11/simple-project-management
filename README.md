@@ -14,3 +14,4 @@
 - Any = \* (Any kind of value, no specific type assignment)
 - Union = number | string
 - Literal = "as-number" | "as-text"
+- Aliases
