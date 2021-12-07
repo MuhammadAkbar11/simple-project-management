@@ -9,9 +9,9 @@
 - boolean = true, false
 - object = {name: "Bae"}
 - array = [1, 2, 3]
-- Tuple = [1, 2] (Added By Typescript : Fixed-length array)
-- Enum = enum {NEW, OLD} (Added By Typescript : Automactically enumarated global constant identifiers)
-- Any = \* (Any kind of value, no specific type assignment)
-- Union = number | string
-- Literal = "as-number" | "as-text"
-- Aliases
+- tuple = [1, 2] (Added By Typescript : Fixed-length array)
+- enum = enum {NEW, OLD} (Added By Typescript : Automactically enumarated global constant identifiers)
+- any = \* (Any kind of value, no specific type assignment)
+- union = number | string
+- literal = "as-number" | "as-text"
+- aliases = type User = number
