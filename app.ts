@@ -26,3 +26,16 @@ console.log(combineStringAges);
 
 const combineNames = combine("Suzy", "Bae", "as-text");
 console.log(combineNames);
+
+// types aliases in object
+type User = { name: string; age: number };
+const u1: User = { name: "bae", age: 26 };
+
+// types aliases in argument of function
+function greet(user: User) {
+  console.log(`Hi, I am ${user.name}`);
+}
+
+function isOlder(user: User, checkAge: number) {
+  return checkAge > user.age;
+}
