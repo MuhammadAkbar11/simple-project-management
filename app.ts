@@ -7,3 +7,8 @@ function printResult(num: number): void {
 }
 
 printResult(add(1, 5));
+
+let combineValues: (a: number, b: number) => number;
+
+combineValues = add;
+// combineValues = 2  false
