@@ -12,4 +12,5 @@
 - Tuple = [1, 2] (Added By Typescript : Fixed-length array)
 - Enum = enum {NEW, OLD} (Added By Typescript : Automactically enumarated global constant identifiers)
 - Any = \* (Any kind of value, no specific type assignment)
-- Union
+- Union = number | string
+- Literal = "as-number" | "as-text"
