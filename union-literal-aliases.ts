@@ -6,7 +6,7 @@ function combine(
   n2: Combinable,
   resultConversion: ConversionDesc
 ) {
-  let result;
+  let result: any;
   if (
     (typeof n1 === "number" && typeof n2 === "number") ||
     resultConversion == "as-number"
