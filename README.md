@@ -49,3 +49,5 @@ Function type is created with this arrow function notation. Not like "Function",
 ```
 let nameOfFunction: (a: number, b: number) => number;
 ```
+
+### Function Types & Callbacks
