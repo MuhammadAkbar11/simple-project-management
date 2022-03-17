@@ -1,5 +1,10 @@
-let age: number;
-age = 500;
-const username = "Baevzev";
+const renderButton = document.createElement("button");
+renderButton.textContent = "Click Here !";
 
-console.log("Time to get started....");
+document.body.append(renderButton);
+
+const button = document.querySelector("button");
+
+button?.addEventListener("click", () => {
+  console.log("click");
+});
