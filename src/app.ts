@@ -7,8 +7,10 @@ renderButton.textContent = "Click Here !";
 document.body.append(title);
 document.body.append(renderButton);
 
-const button = document.querySelector("button");
+const button = document.querySelector("button")!;
 
-button?.addEventListener("click", () => {
-  console.log("click");
-});
+function clickHandler(message: string) {
+  console.log("Clicked! " + message);
+}
+
+button?.addEventListener("click", clickHandler.bind(null, "You're Welcome!"));
