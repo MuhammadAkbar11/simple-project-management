@@ -33,7 +33,7 @@ const activeHobbies = ["Hiking"];
 activeHobbies.push(...hobbies);
 
 const person = {
-  name: "baev",
+  firstName: "baev",
   age: 500,
 };
 
@@ -48,3 +48,11 @@ const add = (...numbers: number[]) => {
 };
 
 const addedNumbers = add(5, 10, 2, 3);
+
+//# Arr & Obj Desctructuring
+
+// arr desc
+const [hobby1, hobby2, ...remainingHobbies] = hobbies;
+
+const { firstName: userName } = person;
+console.log(userName);
