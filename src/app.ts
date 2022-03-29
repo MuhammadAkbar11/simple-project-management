@@ -6,4 +6,4 @@ class Department {
 }
 
 const accounting = new Department("Accounting");
-console.log(accounting);
+console.log(accounting, "departement");
