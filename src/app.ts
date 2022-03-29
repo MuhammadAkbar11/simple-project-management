@@ -9,8 +9,16 @@ document.body.append(renderButton);
 
 const button = document.querySelector("button")!;
 
-function clickHandler(message: string) {
-  console.log("Clicked! " + message);
+type Click = {
+  status: boolean;
+  message: string;
+};
+
+function clickHandler(data: Click) {
+  console.log("Clicked! " + data);
 }
 
-button?.addEventListener("click", clickHandler.bind(null, "You're Welcome!"));
+button?.addEventListener(
+  "click",
+  clickHandler.bind(null, { status: true, message: "You're Welcome!" })
+);
