@@ -1,9 +1,9 @@
 //# let and const
-const userName = "Baev";
+// const userName = "Baev";
 // userName = "Baevzev";  const cant be changed
 
-let age = 30;
-age = 29; // Can be changed
+// let age = 30;
+// age = 29; // Can be changed
 
 //# Arraw Functions
 
@@ -18,11 +18,11 @@ const add = (a: number, b: number) => a + b; // Arrow Functions if only have one
 
 // console.log(add(1, 2));
 
-const printOut: (a: number | string) => void = output => console.log(output);
+// const printOut: (a: number | string) => void = output => console.log(output);
 
 // # Default Function Params
 
-const add = (a: number = 1, b: number = 5) => a + b;
+// const add = (a: number = 1, b: number = 5) => a + b;
 
 // # Spread Operator
 
@@ -38,3 +38,13 @@ const person = {
 };
 
 const baevzev = { ...person, lastname: "zev" };
+
+// # Rest Params
+
+const add = (...numbers: number[]) => {
+  return numbers.reduce((currR, currV) => {
+    return currR + currV;
+  }, 0);
+};
+
+const addedNumbers = add(5, 10, 2, 3);
