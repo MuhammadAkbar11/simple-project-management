@@ -1,58 +1,58 @@
-//# let and const
-// const userName = "Baev";
-// userName = "Baevzev";  const cant be changed
+// //# let and const
+// // const userName = "Baev";
+// // userName = "Baevzev";  const cant be changed
 
-// let age = 30;
-// age = 29; // Can be changed
+// // let age = 30;
+// // age = 29; // Can be changed
 
-//# Arraw Functions
+// //# Arraw Functions
 
-// Arraw Functions with multipe expresions
-// const add = (a: number, b: number) => {
-//   return a + b;
+// // Arraw Functions with multipe expresions
+// // const add = (a: number, b: number) => {
+// //   return a + b;
+// // };
+
+// /*
+// const add = (a: number, b: number) => a + b; // Arrow Functions if only have one expresion
+// */
+
+// // console.log(add(1, 2));
+
+// // const printOut: (a: number | string) => void = output => console.log(output);
+
+// // # Default Function Params
+
+// // const add = (a: number = 1, b: number = 5) => a + b;
+
+// // # Spread Operator
+
+// const hobbies = ["Sports", "Reading"];
+
+// const activeHobbies = ["Hiking"];
+
+// activeHobbies.push(...hobbies);
+
+// const person = {
+//   firstName: "baev",
+//   age: 500,
 // };
 
-/*
-const add = (a: number, b: number) => a + b; // Arrow Functions if only have one expresion
-*/
+// const baevzev = { ...person, lastname: "zev" };
 
-// console.log(add(1, 2));
+// // # Rest Params
 
-// const printOut: (a: number | string) => void = output => console.log(output);
+// const add = (...numbers: number[]) => {
+//   return numbers.reduce((currR, currV) => {
+//     return currR + currV;
+//   }, 0);
+// };
 
-// # Default Function Params
+// const addedNumbers = add(5, 10, 2, 3);
 
-// const add = (a: number = 1, b: number = 5) => a + b;
+// //# Arr & Obj Desctructuring
 
-// # Spread Operator
+// // arr desc
+// const [hobby1, hobby2, ...remainingHobbies] = hobbies;
 
-const hobbies = ["Sports", "Reading"];
-
-const activeHobbies = ["Hiking"];
-
-activeHobbies.push(...hobbies);
-
-const person = {
-  firstName: "baev",
-  age: 500,
-};
-
-const baevzev = { ...person, lastname: "zev" };
-
-// # Rest Params
-
-const add = (...numbers: number[]) => {
-  return numbers.reduce((currR, currV) => {
-    return currR + currV;
-  }, 0);
-};
-
-const addedNumbers = add(5, 10, 2, 3);
-
-//# Arr & Obj Desctructuring
-
-// arr desc
-const [hobby1, hobby2, ...remainingHobbies] = hobbies;
-
-const { firstName: userName } = person;
-console.log(userName);
+// const { firstName: userName } = person;
+// console.log(userName);
