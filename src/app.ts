@@ -7,6 +7,10 @@ class Department {
     // this.name = n;
   }
 
+  static createEmployee(name: string) {
+    return { name: name };
+  }
+
   describe(this: Department) {
     console.log(`Departement: (${this.id}): ${this.name}`);
   }
@@ -75,6 +79,8 @@ class AccountingDepartment extends Department {
   }
 }
 
+const employee1 = Department.createEmployee("max");
+console.log("employee1", employee1);
 const it = new ITDepartment("d2", ["Jihyo"]);
 
 it.addEmployee("Nayeon");
