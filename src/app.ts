@@ -16,20 +16,49 @@ class Department {
   }
 
   printEmployeeInformation() {
-    console.info(this.employees.length);
-    console.info(this.employees.join(" - "));
+    console.info(`${this.employees.join(",")} (${this.employees.length})`);
   }
 }
 
-const accounting = new Department("d1", "Accounting");
+class ITDepartment extends Department {
+  admins: string[];
+  constructor(id: string, admins: string[]) {
+    super(id, "IT");
+    this.admins = admins;
+  }
+  printAdmis() {
+    console.log("admins :>> ", this.admins);
+  }
+}
 
-accounting.addEmployee("Baevzev");
-accounting.addEmployee("Dahyun");
+class AccountingDepartment extends Department {
+  constructor(id: string, private reports: string[]) {
+    super(id, "Accounting");
+  }
+  addReport(text: string) {
+    this.reports.push(text);
+  }
 
-// accounting.employees[2] = "Sharon";
-accounting.describe();
+  printReports() {
+    console.log(this.reports);
+  }
+}
 
+const it = new ITDepartment("d2", ["Jihyo"]);
+
+it.addEmployee("Nayeon");
+it.addEmployee("Cy");
+for (let idx = 0; idx < 5; idx++) {
+  it.addEmployee(`Baev ${idx}`);
+}
+it.describe();
+it.printEmployeeInformation();
+it.printAdmis();
+
+const accounting = new AccountingDepartment("d2", []);
+accounting.addEmployee("Chaeyoung");
+accounting.addEmployee("Hirai Momo");
 accounting.printEmployeeInformation();
-
-// const accountingCopy = { name: "Tech", describe: accounting.describe };
-// accountingCopy.describe();
+accounting.addReport("Something went wrong");
+accounting.addReport("Server Error");
+accounting.printReports();
