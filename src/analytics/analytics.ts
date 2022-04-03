@@ -1,7 +1,8 @@
 let logged;
 
 function sendAnalytics(data: string) {
-  console.info("Sending...");
+  console.info("\n");
+  console.info(`Sending...`);
   setTimeout(() => {
     console.info("Success to send analytics");
     console.log({ data: data });
@@ -10,4 +11,4 @@ function sendAnalytics(data: string) {
   }, 2000);
 }
 
-sendAnalytics("The Data");
+sendAnalytics("Typescript crash course");
