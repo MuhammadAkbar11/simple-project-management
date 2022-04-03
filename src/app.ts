@@ -1,8 +1,8 @@
-class Department {
-  // private readonly id : string
+abstract class Department {
+  // private readonly id: string
   // public name: string;
   protected employees: string[] = [];
-  constructor(private readonly id: string, public name: string) {
+  constructor(protected readonly id: string, public name: string) {
     // this.id = id;
     // this.name = n;
   }
@@ -11,9 +11,7 @@ class Department {
     return { name: name };
   }
 
-  describe(this: Department) {
-    console.log(`Departement: (${this.id}): ${this.name}`);
-  }
+  abstract describe(this: Department): void;
 
   addEmployee(employee: string) {
     this.employees.push(employee);
@@ -31,8 +29,13 @@ class ITDepartment extends Department {
     super(id, "IT");
     this.admins = admins;
   }
+
+  describe() {
+    console.log(`IT Departement - ID: ${this.id}`);
+  }
+
   printAdmis() {
-    console.log("admins :>> ", this.admins);
+    console.log(this.admins);
   }
 }
 
@@ -56,6 +59,10 @@ class AccountingDepartment extends Department {
   constructor(id: string, private reports: string[]) {
     super(id, "Accounting");
     this.lastReport = reports[0];
+  }
+
+  describe() {
+    console.log(`Accounting Departement - ID: ${this.id}`);
   }
 
   addEmployee(name: string) {
