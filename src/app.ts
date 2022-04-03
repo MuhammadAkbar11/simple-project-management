@@ -1,5 +1,12 @@
-interface Greetable {
+interface Named {
   readonly name: string;
+}
+
+interface Aged {
+  readonly age: number;
+}
+// iterface can multiple Extends
+interface Greetable extends Named, Aged {
   greet(phrase: string): void;
 }
 
