@@ -1,7 +1,7 @@
 class Department {
   // private readonly id : string
   // public name: string;
-  private employees: string[] = [];
+  protected employees: string[] = [];
   constructor(private readonly id: string, public name: string) {
     // this.id = id;
     // this.name = n;
@@ -16,7 +16,8 @@ class Department {
   }
 
   printEmployeeInformation() {
-    console.info(`${this.employees.join(",")} (${this.employees.length})`);
+    console.info(`Employess: ${this.employees.join(",")}`);
+    console.log(`Total Employess: ${this.employees.length} \n`);
   }
 }
 
@@ -35,6 +36,18 @@ class AccountingDepartment extends Department {
   constructor(id: string, private reports: string[]) {
     super(id, "Accounting");
   }
+
+  addEmployee(name: string) {
+    const exists = this.employees.filter(n => n.trim() === name.trim());
+
+    if (exists.length !== 0) {
+      return console.error(
+        `[error] Employee with name "${name}" already exist`
+      );
+    }
+    this.employees.push(name);
+  }
+
   addReport(text: string) {
     this.reports.push(text);
   }
@@ -58,6 +71,8 @@ it.printAdmis();
 const accounting = new AccountingDepartment("d2", []);
 accounting.addEmployee("Chaeyoung");
 accounting.addEmployee("Hirai Momo");
+accounting.addEmployee("Chaeyoung");
+accounting.describe();
 accounting.printEmployeeInformation();
 accounting.addReport("Something went wrong");
 accounting.addReport("Server Error");
