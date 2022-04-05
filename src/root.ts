@@ -1,5 +1,5 @@
 const title = document.createElement("h1");
-title.textContent = "Understanding TypeScript - Section 6 Advanced Types";
+title.textContent = "Understanding TypeScript - Section 7 Generics";
 
 const input = document.createElement("input");
 input.setAttribute("type", "email");
