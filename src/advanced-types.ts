@@ -159,7 +159,7 @@ const fethedUserData = {
   // job: { title: "CEO", desc: "My own Company" },
 };
 
-console.log(fethedUserData?.job?.title ?? false);
+// console.log(fethedUserData?.job?.title ?? false);
 
 const userInput = "";
 
