@@ -134,8 +134,6 @@ const errBag: ErroContainer = {
   username: "Must start with capital character!",
 };
 
-console.log("=======================");
-
 type Combinable = string | number;
 type Numeric = number | boolean;
 
@@ -154,3 +152,11 @@ function combine(a: Combinable, b: Combinable) {
 }
 
 const result = combine("Baev", "Zev");
+
+const fethedUserData = {
+  id: "u1",
+  name: "baev",
+  // job: { title: "CEO", desc: "My own Company" },
+};
+
+console.log(fethedUserData?.job?.title);
