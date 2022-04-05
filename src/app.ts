@@ -85,3 +85,32 @@ function useVehicle(vehicle: Vehicle) {
 
 useVehicle(v1);
 useVehicle(v2);
+
+console.log("================");
+
+interface Dragon {
+  type: "dragon";
+  flyingSpeed: number;
+}
+
+interface Unicorn {
+  type: "unicorn";
+  runningSpeed: number;
+}
+
+type Animal = Dragon | Unicorn;
+
+function moveAnimal(animal: Animal) {
+  let speed: number;
+  switch (animal.type) {
+    case "dragon":
+      speed = animal.flyingSpeed;
+      break;
+    case "unicorn":
+      speed = animal.runningSpeed;
+      break;
+  }
+  console.log(`Moving with Speed : ${speed}`);
+}
+
+moveAnimal({ type: "dragon", flyingSpeed: 120 });
