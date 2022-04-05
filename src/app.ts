@@ -159,4 +159,10 @@ const fethedUserData = {
   // job: { title: "CEO", desc: "My own Company" },
 };
 
-console.log(fethedUserData?.job?.title);
+console.log(fethedUserData?.job?.title ?? false);
+
+const userInput = "";
+
+const storedData = userInput ?? "DEFAULT";
+
+console.log(storedData);
