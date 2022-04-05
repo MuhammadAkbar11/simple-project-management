@@ -16,5 +16,23 @@ const mergedObj = merge(
   { name: "baev", skills: ["ReactJS", "Nodejs"] },
   { age: 500 }
 );
-
 console.log(mergedObj);
+
+console.log("==============");
+
+interface Lengthty {
+  length: number;
+}
+
+function countAndDescribe<T extends Lengthty>(element: T): [T, string] {
+  let descTxt = "Got no value.";
+
+  if (element.length === 1) {
+    descTxt = `Got 1 Element`;
+  } else if (element.length > 1) {
+    descTxt = `Got ${element.length} elements`;
+  }
+  return [element, descTxt];
+}
+
+console.log(countAndDescribe(["Sports", "Reading"]));
