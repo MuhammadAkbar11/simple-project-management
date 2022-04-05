@@ -114,3 +114,11 @@ function moveAnimal(animal: Animal) {
 }
 
 moveAnimal({ type: "dragon", flyingSpeed: 120 });
+
+const heading = <HTMLElement>document.querySelector("h1")!;
+// const userInputEl = <HTMLInputElement>document.getElementById("user-input")!;
+const userInputEl = document.getElementById("user-input")! as HTMLInputElement;
+
+const prevText = heading.textContent;
+heading.textContent = `${prevText} Update`;
+userInputEl.value = "Hello there!";
