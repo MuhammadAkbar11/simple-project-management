@@ -122,3 +122,14 @@ const userInputEl = document.getElementById("user-input")! as HTMLInputElement;
 const prevText = heading.textContent;
 heading.textContent = `${prevText} Update`;
 userInputEl.value = "Hello there!";
+
+console.log("================");
+
+interface ErroContainer {
+  [props: string]: string;
+}
+
+const errBag: ErroContainer = {
+  email: "Not a valid email!",
+  username: "Must start with capital character!",
+};
