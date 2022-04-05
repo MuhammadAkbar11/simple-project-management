@@ -30,18 +30,18 @@ const e1: ElevatedEmployee = {
   startDate: new Date(),
 };
 console.log(e1);
-type Combinable = string | number;
-type Numeric = number | boolean;
+// type Combinable = string | number;
+// type Numeric = number | boolean;
 
-type Universal = Combinable & Numeric;
+// type Universal = Combinable & Numeric;
 
-function combine(a: Combinable, b: Combinable) {
-  if (typeof a === "string" || typeof b === "string") {
-    return a.toString() + a.toString();
-  }
+// function combine(a: Combinable, b: Combinable) {
+//   if (typeof a === "string" || typeof b === "string") {
+//     return a.toString() + a.toString();
+//   }
 
-  return a + b;
-}
+//   return a + b;
+// }
 
 type UnknownEmployee = Employee | Admin;
 
@@ -133,3 +133,24 @@ const errBag: ErroContainer = {
   email: "Not a valid email!",
   username: "Must start with capital character!",
 };
+
+console.log("=======================");
+
+type Combinable = string | number;
+type Numeric = number | boolean;
+
+type Universal = Combinable & Numeric;
+
+function combine(a: number, b: number): number;
+function combine(a: string, b: string): string;
+function combine(a: number, b: string): number;
+function combine(a: string, b: number): string;
+function combine(a: Combinable, b: Combinable) {
+  if (typeof a === "string" || typeof b === "string") {
+    return a.toString() + a.toString();
+  }
+
+  return a + b;
+}
+
+const result = combine("Baev", "Zev");
