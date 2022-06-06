@@ -7,6 +7,7 @@ function Logger(logString: string) {
 
 function WithTemplate(template: string, hookId: string) {
   return function (constructor: any) {
+    console.log("Rendering Template");
     const wrapperEl = document.createElement("div");
     wrapperEl.className = "decorator-wrapper";
     wrapperEl.id = "decorator-wrapper";
@@ -15,13 +16,13 @@ function WithTemplate(template: string, hookId: string) {
 
     if (hookId) {
       wrapperEl.innerHTML = template;
-      wrapperEl.querySelector("h1")!.textContent = p.name;
+      wrapperEl.querySelector("h1")!.textContent = "Hay " + p.name;
       document.getElementById(hookId)?.appendChild(wrapperEl);
     }
   };
 }
 
-// @Logger("LOGGING - PERSON")
+@Logger("LOGGING - PERSON")
 @WithTemplate("<h1>My Person Object</h1>", "root")
 class Person {
   name = "baaev";
