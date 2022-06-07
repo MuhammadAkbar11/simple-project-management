@@ -6,19 +6,24 @@ function Logger(logString: string) {
 }
 
 function WithTemplate(template: string, hookId: string) {
-  return function (constructor: any) {
-    console.log("Rendering Template");
-    const wrapperEl = document.createElement("div");
-    wrapperEl.className = "decorator-wrapper";
-    wrapperEl.id = "decorator-wrapper";
+  return function <T extends { new (...args: any[]): { name: string } }>(
+    originalConstructor: T
+  ) {
+    return class extends originalConstructor {
+      constructor(..._: any[]) {
+        super();
+        console.log("Rendering Template");
+        const wrapperEl = document.createElement("div");
+        wrapperEl.className = "decorator-wrapper";
+        wrapperEl.id = "decorator-wrapper";
 
-    const p = new constructor();
-
-    if (hookId) {
-      wrapperEl.innerHTML = template;
-      wrapperEl.querySelector("h1")!.textContent = "Hay " + p.name;
-      document.getElementById(hookId)?.appendChild(wrapperEl);
-    }
+        if (hookId) {
+          wrapperEl.innerHTML = template;
+          wrapperEl.querySelector("h1")!.textContent = "Hay " + this.name;
+          document.getElementById(hookId)?.appendChild(wrapperEl);
+        }
+      }
+    };
   };
 }
 
