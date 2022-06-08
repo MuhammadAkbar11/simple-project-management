@@ -17,10 +17,15 @@ function WithTemplate(template: string, hookId: string) {
         wrapperEl.className = "decorator-wrapper";
         wrapperEl.id = "decorator-wrapper";
 
+        const button = document.createElement("button");
+        button.textContent = "Click me!";
+        button.id = "btn";
+
         if (hookId) {
           wrapperEl.innerHTML = template;
           wrapperEl.querySelector("h1")!.textContent = "Hay " + this.name;
           document.getElementById(hookId)?.appendChild(wrapperEl);
+          document.getElementById(hookId)?.appendChild(button);
         }
       }
     };
@@ -30,7 +35,7 @@ function WithTemplate(template: string, hookId: string) {
 @Logger("LOGGING - PERSON")
 @WithTemplate("<h1>My Person Object</h1>", "root")
 class Person {
-  name = "baaev";
+  name = "Baaev Legieuvn";
 
   constructor() {
     console.log("Creating person object...");
@@ -97,3 +102,36 @@ class Product {
     return this._price * (1 + tax);
   }
 }
+
+function AutoBind(
+  _target: any,
+  _methodName: string,
+  descriptor: PropertyDescriptor
+) {
+  const originalMethod = descriptor.value;
+  const adjDescriptor: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+    get() {
+      const boundFn = originalMethod.bind(this);
+      return boundFn;
+    },
+  };
+
+  return adjDescriptor;
+}
+
+class Printer {
+  message = "this works!";
+
+  @AutoBind
+  showMessage() {
+    console.log(this.message);
+  }
+}
+
+const printer = new Printer();
+
+const button = document.querySelector("#btn")!;
+
+button.addEventListener("click", printer.showMessage);
