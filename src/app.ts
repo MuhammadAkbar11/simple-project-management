@@ -135,3 +135,59 @@ const printer = new Printer();
 const button = document.querySelector("#btn")!;
 
 button.addEventListener("click", printer.showMessage);
+
+function Required() {}
+function PositiveNumber() {}
+
+function validate(obj: object): any {}
+
+type Courses = {
+  title: string;
+  price: number;
+};
+
+class Course {
+  title: string;
+  price: number;
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this.price = p;
+  }
+
+  save() {
+    const ListCourseEl = document.querySelector("#list-course")!;
+    const CourseItemEl = document.createElement("li");
+    console.log(this.price);
+    CourseItemEl.innerHTML = `Name: ${this.title}, price: ${this.price}`;
+    if (!ListCourseEl) {
+      const ListCourseElInit = document.createElement("ul");
+      ListCourseElInit.appendChild(CourseItemEl);
+      document.getElementById("root")?.appendChild(ListCourseElInit);
+    } else {
+      ListCourseEl.appendChild(CourseItemEl);
+    }
+  }
+}
+
+const CouseForm = document.querySelector("form")!;
+
+CouseForm.addEventListener("submit", event => {
+  event.preventDefault();
+  const TitleEl = document.getElementById("title") as HTMLInputElement;
+  const PriceEl = document.getElementById("price") as HTMLInputElement;
+
+  const title = TitleEl.value;
+  const price = +PriceEl.value;
+
+  const createdCourse = new Course(title, price);
+
+  if (!validate(createdCourse)) {
+    alert("Invalid Input, please try again");
+    return;
+  }
+
+  createdCourse.save();
+  TitleEl.value = "";
+  PriceEl.value = "";
+});
