@@ -136,10 +136,52 @@ const button = document.querySelector("#btn")!;
 
 button.addEventListener("click", printer.showMessage);
 
-function Required() {}
-function PositiveNumber() {}
+interface ValidatorConfig {
+  [proeperty: string]: {
+    [validatableProps: string]: string[];
+  };
+}
 
-function validate(obj: object): any {}
+const registredValidators: ValidatorConfig = {};
+
+function Required(target: any, propName: string) {
+  registredValidators[target.constructor.name] = {
+    ...registredValidators[target.constructor.name],
+    [propName]: ["required"],
+  };
+}
+function PositiveNumber(target: any, propName: string) {
+  registredValidators[target.constructor.name] = {
+    ...registredValidators[target.constructor.name],
+    [propName]: ["positive"],
+  };
+}
+
+function validate(obj: any): any {
+  const objValidatorConfig = registredValidators[obj.constructor.name];
+
+  if (!objValidatorConfig) {
+    return true;
+  }
+
+  let isValid = true;
+  for (const prop in objValidatorConfig) {
+    console.log(prop);
+    for (const validator of objValidatorConfig[prop]) {
+      switch (validator) {
+        case "required":
+          isValid = isValid && !!obj[prop];
+          break;
+        case "positive":
+          isValid = isValid && obj[prop] > 0;
+          break;
+        default:
+          break;
+      }
+    }
+  }
+  return isValid;
+}
 
 type Courses = {
   title: string;
@@ -147,7 +189,9 @@ type Courses = {
 };
 
 class Course {
+  @Required
   title: string;
+  @PositiveNumber
   price: number;
 
   constructor(t: string, p: number) {
