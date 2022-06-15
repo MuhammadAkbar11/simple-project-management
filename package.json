@@ -6,11 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "lite-server",
-    "tsc" : "tsc --watch "
+    "tsc": "tsc --watch "
   },
   "author": "Maximilian Schwarzmüller",
   "license": "ISC",
   "devDependencies": {
     "lite-server": "^2.5.4"
+  },
+  "dependencies": {
+    "bootstrap": "^5.1.3",
+    "bootswatch": "^5.1.3"
   }
 }

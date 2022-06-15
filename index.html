@@ -5,21 +5,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Understanding TypeScript</title>
+  <title>ProjectManager</title>
+  <link rel="stylesheet" href="./src/css/app.min.css" />
+  <script src="public/bootstrap.min.js" defer></script>
   <script src="dist/root.js" defer></script>
   <script src="dist/app.js" defer></script>
-  <script src="dist/analytics/analytics.js" defer></script>
 </head>
 
 <body>
-  <div id="root"></div>
+  <template id="project-input">
+    <form>
+      <div class="form-group">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" id="title" class=" form-control" />
+      </div>
+      <div class="form-group">
+        <label for="description" class="form-label">Description</label>
+        <textarea id="description" rows="3" class=" form-control"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="people" class="form-label">People</label>
+        <input type="number" id="people" step="1" min="0" max="10" class=" form-control" />
+      </div>
+      <button class="btn btn-primary" type="submit">ADD PROJECT</button>
+    </form>
+  </template>
+  <template id="single-project">
+    <li></li>
+  </template>
+  <template id="project-list">
+    <section class="projects">
+      <header>
+        <h2></h2>
+      </header>
+      <ul></ul>
+    </section>
+  </template>
 
-  <br>
-  <form action="">
-    <input type="text" id="title">
-    <input type="text" id="price">
-    <button id="form-submit" type="submit">Submit</button>
-  </form>
+
+  <div id="root"></div>
 </body>
 
 </html>
