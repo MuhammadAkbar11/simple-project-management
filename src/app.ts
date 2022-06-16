@@ -50,10 +50,31 @@ class ProjectInput {
     this.attach();
   }
 
+  private getherUserInput(): [string, string, number] {
+    const enteredTitle = this.titleInputEl.value;
+    const enteredDescription = this.descriptionInputEl.value;
+    const enteredPeople = +this.peopleInputEl.value;
+
+    return [enteredTitle, enteredDescription, enteredPeople];
+  }
+
+  private clearInput() {
+    this.titleInputEl.value = "";
+    this.descriptionInputEl.value = "";
+    this.peopleInputEl.value = "";
+  }
+
   @AutoBind
   private submitHandler(event: Event) {
     event.preventDefault();
     console.log(this.titleInputEl.value, "yeaay");
+    const userInput = this.getherUserInput();
+
+    if (Array.isArray(userInput)) {
+      const [title, desc, people] = userInput;
+      console.log(title, desc, people);
+      this.clearInput();
+    }
   }
 
   private configure() {
