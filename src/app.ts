@@ -1,6 +1,23 @@
+enum ProjectStatus {
+  Active,
+  Finished,
+}
+
+class Project {
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public people: number,
+    public status: ProjectStatus
+  ) {}
+}
+
+type Listener = (items: Project[]) => void;
+
 class ProjectState {
-  private listeners: any[] = [];
-  private projects: any[] = [];
+  private listeners: Listener[] = [];
+  private projects: Project[] = [];
   private static instance: ProjectState;
 
   private constructor() {
@@ -16,17 +33,18 @@ class ProjectState {
     return this.instance;
   }
 
-  addListener(listenersFn: Function) {
+  addListener(listenersFn: Listener) {
     this.listeners.push(listenersFn);
   }
 
   addProject(title: string, description: string, numOfPeople: number) {
-    const newProject = {
-      id: new Date().getMilliseconds(),
+    const newProject = new Project(
+      Date.now().toString(),
       title,
       description,
       numOfPeople,
-    };
+      ProjectStatus.Active
+    );
     this.projects.push(newProject);
     for (const listenersFn of this.listeners) {
       listenersFn(this.projects.slice());
@@ -109,7 +127,7 @@ class ProjectList {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLElement;
-  assignedProjects: any[];
+  assignedProjects: Project[];
 
   constructor(private type: "active" | "finished") {
     this.type = type;
@@ -126,7 +144,7 @@ class ProjectList {
     this.element = importedNode.firstElementChild as HTMLFormElement;
     this.element.id = `${this.type}-projects`;
 
-    projectState.addListener((projects: any[]) => {
+    projectState.addListener((projects: Project[]) => {
       this.assignedProjects = projects;
       this.renderProjects();
     });
@@ -142,11 +160,11 @@ class ProjectList {
     for (const prjItem of this.assignedProjects) {
       const listItemContent = `
 
-        <div class="ms-2 me-auto">
+        <div class="ms-2 me-auto" id="project-${prjItem.id}" >
           <div class="fw-bold" id="subheading">${prjItem.title}</div>
           <div id="content">${prjItem.description}</div>
         </div>
-        <span class="badge bg-primary rounded-pill">${prjItem.numOfPeople}</span>
+        <span class="badge bg-primary rounded-pill">${prjItem.people}</span>
 
       `;
       const listItem = document.createElement("li") as HTMLLIElement;
@@ -252,7 +270,6 @@ class ProjectInput {
   @AutoBind
   private submitHandler(event: Event) {
     event.preventDefault();
-    console.log(this.titleInputEl.value, "yeaay");
     const userInput = this.getherUserInput();
 
     if (Array.isArray(userInput)) {
