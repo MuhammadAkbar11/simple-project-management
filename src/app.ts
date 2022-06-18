@@ -29,7 +29,6 @@ class ProjectState extends State<Project> {
 
   private constructor() {
     super();
-    console.log(this.projects, "project state");
   }
 
   static getInstance() {
@@ -43,7 +42,7 @@ class ProjectState extends State<Project> {
 
   addProject(title: string, description: string, numOfPeople: number) {
     const newProject = new Project(
-      Date.now().toString(),
+      (this.projects.length + 1).toString(),
       title,
       description,
       numOfPeople,
@@ -182,6 +181,14 @@ class ProjectContainer extends Component<HTMLDivElement, HTMLDivElement> {
 class ProjectItem extends Component<HTMLDivElement, HTMLElement> {
   private project: Project;
 
+  get persons() {
+    if (this.project.people === 1) {
+      return "1 person";
+    } else {
+      return `${this.project.people} persons`;
+    }
+  }
+
   constructor(hostId: string, project: Project) {
     super({
       templateId: "single-project",
@@ -199,8 +206,9 @@ class ProjectItem extends Component<HTMLDivElement, HTMLElement> {
     this.element.querySelector("#subheading")!.textContent = this.project.title;
     this.element.querySelector("#content")!.textContent =
       this.project.description;
-    this.element.querySelector("#badge-people")!.textContent =
-      this.project.people.toString();
+    this.element.querySelector(
+      "#badge-people"
+    )!.textContent = `${this.persons} assigned`;
   }
 }
 
@@ -216,21 +224,23 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
     });
     this.type = type;
     this.assignedProjects = [];
+
     this.configure();
     this.render();
   }
 
   renderProjects() {
-    const listEl = document.getElementById(
-      `${this.type}-projects-list`
+    const listProjectRow = this.element.querySelector(
+      `#${this.type}-projects-list`
     )! as HTMLUListElement;
+    listProjectRow.innerHTML = "";
+
     for (const prjItem of this.assignedProjects) {
-      new ProjectItem(listEl.id, prjItem);
+      new ProjectItem(listProjectRow.id, prjItem);
     }
   }
 
   configure() {
-    console.log("configure");
     projectState.addListener((projects: Project[]) => {
       const relevantProjects = projects.filter(prj => {
         if (this.type === "active") {
@@ -239,6 +249,7 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
         return prj.status === ProjectStatus.Finished;
       });
       this.assignedProjects = relevantProjects;
+
       this.renderProjects();
     });
   }
