@@ -13,61 +13,66 @@
 </head>
 
 <body>
-  <template id="project-input">
+
+  <template id="project-container">
     <div class="container">
-      <div class="row mt-5 ">
-        <div class="col-12 col-md-6">
-          <div class="card">
-            <div class="card-header bg-transparent border-0 pt-4  ">
-              <h5 class="card-title fw-normal text-center text-capitalize ">Add new project</h5>
-            </div>
-            <div class="card-body px-4">
-              <form>
-                <div class="mb-3">
-                  <label for="title" class="form-label">Title</label>
-                  <input type="text" id="title" class=" form-control" />
-                </div>
-                <div class="mb-3">
-                  <label for="description" class="form-label">Description</label>
-                  <textarea id="description" rows="3" class="form-control"></textarea>
-                </div>
-                <div class="mb-3">
-                  <label for="people" class="form-label">People</label>
-                  <input type="number" id="people" step="1" min="0" max="10" class="form-control" />
-                </div>
-                <div>
-                  <button class="btn shadow-none me-2 " type="reset">RESET</button>
-                  <button class="btn btn-primary" type="submit">ADD PROJECT</button>
-                </div>
-              </form>
-            </div>
-          </div>
+      <div class="row mt-5">
+        <div class="col-12 col-md-6" id="project-input-col">
+
         </div>
         <div class="col-12 col-md-6" id="project-list-col"></div>
       </div>
     </div>
   </template>
-  <template id="single-project">
-    <li class="list-group-item d-flex justify-content-between align-items-start">
-      <div class="ms-2 me-auto">
-        <div class="fw-bold" id="subheading">Subheading</div>
-        <div id="content"></div>
+
+  <template id="project-input">
+    <div class="card">
+      <div class="card-header bg-transparent border-0 pt-4  ">
+        <h5 class="card-title fw-normal text-center text-capitalize ">Add new project</h5>
       </div>
-      <span class="badge bg-primary rounded-pill">14</span>
-    </li>
+      <div class="card-body px-4">
+        <form>
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" id="title" name="title" class=" form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" name="description" rows="3" class="form-control"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="people" class="form-label">People</label>
+            <input type="number" id="people" name="people" step="1" min="0" max="10" class="form-control" />
+          </div>
+          <div>
+            <button class="btn shadow-none me-2 " type="reset">RESET</button>
+            <button class="btn btn-primary" type="submit">ADD PROJECT</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </template>
+  <template id="single-project">
+    <div class="col-12 ">
+      <div class="card card-body">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Subheading</div>
+          <div id="content"></div>
+        </div>
+        <span class="badge bg-primary rounded-pill">14</span>
+      </div>
+    </div>
   </template>
   <template id="project-list">
     <section class="projects mb-4">
-      <div class="card">
+      <div class="card pt-3">
         <div class="card-header bg-transparent border-0 ">
-          <header>
-            <h4 class="card-title fw-normal text-center text-uppercase" id="title-projects-list"></h4>
-          </header>
+          <h4 class="card-title fw-normal text-center text-uppercase" id="title-projects-list"></h4>
         </div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
+        <div class="card-body px-3">
+          <div class="row " id="project-list-row">
 
-          </ul>
+          </div>
 
         </div>
       </div>
