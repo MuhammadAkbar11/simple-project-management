@@ -179,6 +179,31 @@ class ProjectContainer extends Component<HTMLDivElement, HTMLDivElement> {
   render() {}
 }
 
+class ProjectItem extends Component<HTMLDivElement, HTMLElement> {
+  private project: Project;
+
+  constructor(hostId: string, project: Project) {
+    super({
+      templateId: "single-project",
+      hostElementId: hostId,
+      insertPosition: "beforeend",
+      newElementId: project.id,
+    });
+    this.project = project;
+    this.configure();
+    this.render();
+  }
+
+  configure() {}
+  render() {
+    this.element.querySelector("#subheading")!.textContent = this.project.title;
+    this.element.querySelector("#content")!.textContent =
+      this.project.description;
+    this.element.querySelector("#badge-people")!.textContent =
+      this.project.people.toString();
+  }
+}
+
 class ProjectList extends Component<HTMLDivElement, HTMLElement> {
   assignedProjects: Project[];
 
@@ -199,23 +224,8 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
     const listEl = document.getElementById(
       `${this.type}-projects-list`
     )! as HTMLUListElement;
-    listEl.innerHTML = "";
     for (const prjItem of this.assignedProjects) {
-      const listItemContent = `
-      <div class="card  " id="project-${prjItem.id}">
-        <div class="card-body d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-              <div class="fw-bold" id="subheading">${prjItem.title}</div>
-              <div id="content">${prjItem.description}</div>
-            </div>
-            <span class="badge bg-primary rounded-pill">${prjItem.people}</span>
-        </div>
-      </div>
-      `;
-      const listItem = document.createElement("div") as HTMLDivElement;
-      listItem.className = "col-12 mb-2 mx-auto ";
-      listItem.innerHTML = listItemContent;
-      listEl.appendChild(listItem);
+      new ProjectItem(listEl.id, prjItem);
     }
   }
 
