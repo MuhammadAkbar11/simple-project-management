@@ -1,14 +1,12 @@
 # Simple Project Management
 
-## Stacks
+### Stacks
 
 - Typescript
 - Bootstrap 5
 - Bootswatch
 
-<br>
-
-## Features
+### Features
 
 - CRUD Project
 - Drag & Drop Project
