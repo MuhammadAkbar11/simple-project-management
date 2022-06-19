@@ -39,7 +39,11 @@ $spacers: (
 
 @import "../../node_modules/bootstrap/scss/utilities/api";
 
-
 @import "../../node_modules/bootswatch/dist/litera/bootswatch.scss";
-@import "./dragdrop"
+
+
+.droppable {
+  box-sizing: border-box;
+  background-color: $gray-100;
+}
 
