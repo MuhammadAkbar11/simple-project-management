@@ -3,6 +3,17 @@ enum ProjectStatus {
   Finished,
 }
 
+interface Draggable {
+  dragStartHandler(event: DragEvent): void;
+  dragEndHandler(event: DragEvent): void;
+}
+
+interface DragTarget {
+  dragOverHandler(event: DragEvent): void;
+  dropHandler(event: DragEvent): void;
+  dragLeaveHander(event: DragEvent): void;
+}
+
 const initProjects = [
   {
     id: "1",
@@ -41,11 +52,12 @@ class State<ST> {
 }
 
 class ProjectState extends State<Project> {
-  private projects: Project[] = [...initProjects];
+  private projects: Project[] = [];
   private static instance: ProjectState;
 
   private constructor() {
     super();
+    this.projects = [...initProjects];
     this.initDefaultState();
   }
 
@@ -217,7 +229,10 @@ class ProjectContainer extends Component<HTMLDivElement, HTMLDivElement> {
   render() {}
 }
 
-class ProjectItem extends Component<HTMLDivElement, HTMLElement> {
+class ProjectItem
+  extends Component<HTMLDivElement, HTMLElement>
+  implements Draggable
+{
   private project: Project;
 
   get persons() {
@@ -233,15 +248,27 @@ class ProjectItem extends Component<HTMLDivElement, HTMLElement> {
       templateId: "single-project",
       hostElementId: hostId,
       insertPosition: "beforeend",
-      newElementId: project.id,
+      newElementId: `project-col-${project.id}`,
     });
     this.project = project;
     this.configure();
     this.render();
   }
 
-  configure() {}
+  @AutoBind
+  dragStartHandler(event: DragEvent): void {}
+
+  @AutoBind
+  dragEndHandler(event: DragEvent): void {
+    console.log(event);
+  }
+
+  configure() {
+    this.element.addEventListener("dragstart", this.dragStartHandler);
+    this.element.addEventListener("dragend", this.dragEndHandler);
+  }
   render() {
+    this.element.draggable = true;
     this.element.querySelector("#subheading")!.textContent = this.project.title;
     this.element.querySelector("#content")!.textContent =
       this.project.description;
