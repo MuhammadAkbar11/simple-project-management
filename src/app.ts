@@ -256,7 +256,7 @@ class ProjectItem
   }
 
   @AutoBind
-  dragStartHandler(event: DragEvent): void {}
+  dragStartHandler(_event: DragEvent): void {}
 
   @AutoBind
   dragEndHandler(event: DragEvent): void {
@@ -278,7 +278,10 @@ class ProjectItem
   }
 }
 
-class ProjectList extends Component<HTMLDivElement, HTMLElement> {
+class ProjectList
+  extends Component<HTMLDivElement, HTMLElement>
+  implements DragTarget
+{
   assignedProjects: Project[];
 
   constructor(private type: "active" | "finished") {
@@ -293,6 +296,23 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
     this.configure();
     this.render();
     this.renderProjects();
+  }
+
+  @AutoBind
+  dragOverHandler(_event: DragEvent): void {
+    const listProjectCard = this.element.querySelector(
+      `.project-list-card`
+    )! as HTMLDivElement;
+    listProjectCard.classList.add("droppable");
+  }
+  @AutoBind
+  dropHandler(_event: DragEvent): void {}
+  @AutoBind
+  dragLeaveHander(_event: DragEvent): void {
+    const listProjectCard = this.element.querySelector(
+      `.project-list-card`
+    )! as HTMLDivElement;
+    listProjectCard.classList.remove("droppable");
   }
 
   renderProjects() {
@@ -315,6 +335,10 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
   }
 
   configure() {
+    this.element.addEventListener("dragover", this.dragOverHandler);
+    this.element.addEventListener("dragleave", this.dragLeaveHander);
+    this.element.addEventListener("drop", this.dropHandler);
+
     projectState.addListener((_projects: Project[]) => {
       this.renderProjects();
     });
