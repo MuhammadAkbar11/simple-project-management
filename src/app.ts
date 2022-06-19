@@ -52,6 +52,7 @@ class State<ST> {
 }
 
 class ProjectState extends State<Project> {
+  private projectIdInc: number = 1;
   private projects: Project[] = [];
   private static instance: ProjectState;
 
@@ -66,13 +67,13 @@ class ProjectState extends State<Project> {
       if (initPrj instanceof Project === false) {
         const indexOf = this.projects.findIndex(el => el.id === initPrj.id);
         const transformToProject = new Project(
-          initPrj.id.toString(),
+          this.projectIdInc.toString(),
           initPrj.title,
           initPrj.description,
           initPrj.people,
           initPrj.status
         );
-
+        this.projectIdInc++ + 1;
         this.projects[indexOf] = transformToProject;
       }
     }
@@ -89,13 +90,27 @@ class ProjectState extends State<Project> {
 
   addProject(title: string, description: string, numOfPeople: number) {
     const newProject = new Project(
-      (this.projects.length + 1).toString(),
+      this.projectIdInc.toString(),
       title,
       description,
       numOfPeople,
       ProjectStatus.Active
     );
     this.projects.push(newProject);
+    this.projectIdInc++ + 1;
+    this.updateListeners();
+  }
+
+  moveProject(projectId: string, newStatus: ProjectStatus) {
+    const selectedProject = this.projects.find(prj => prj.id === projectId);
+
+    if (selectedProject && selectedProject.status !== newStatus) {
+      selectedProject.status = newStatus;
+      this.updateListeners();
+    }
+  }
+
+  private updateListeners() {
     for (const listenersFn of this.listeners) {
       listenersFn(this.projects.slice());
     }
@@ -262,14 +277,15 @@ class ProjectItem
   }
 
   @AutoBind
-  dragEndHandler(event: DragEvent): void {
-    console.log(event);
+  dragEndHandler(_event: DragEvent): void {
+    console.log("DragEnd");
   }
 
   configure() {
     this.element.addEventListener("dragstart", this.dragStartHandler);
     this.element.addEventListener("dragend", this.dragEndHandler);
   }
+
   render() {
     this.element.draggable = true;
     this.element.querySelector("#subheading")!.textContent = this.project.title;
@@ -313,7 +329,15 @@ class ProjectList
   }
   @AutoBind
   dropHandler(event: DragEvent): void {
-    console.log(event.dataTransfer!.getData("text/plain"));
+    const prjId = event.dataTransfer!.getData("text/plain");
+    projectState.moveProject(
+      prjId,
+      this.type === "active" ? ProjectStatus.Active : ProjectStatus.Finished
+    );
+    const listProjectCard = this.element.querySelector(
+      `.project-list-card`
+    )! as HTMLDivElement;
+    listProjectCard.classList.remove("droppable");
   }
   @AutoBind
   dragLeaveHander(_event: DragEvent): void {
@@ -335,6 +359,7 @@ class ProjectList
       return prj.status === ProjectStatus.Finished;
     });
     this.assignedProjects = relevantProjects;
+    console.log(projectState.getProjects());
     for (const project of this.assignedProjects) {
       if (!!project) {
         new ProjectItem(listProjectRow.id, project);
