@@ -17,9 +17,8 @@
     <div class="container">
       <div class="row mt-5">
         <div class="col-12 col-md-6" id="project-input-col">
-
         </div>
-        <div class="col-12 col-md-6" id="project-list-col"></div>
+        <div class="col-12 col-md-6 mb-3" id="project-list-col"></div>
       </div>
     </div>
   </template>
@@ -58,24 +57,25 @@
           <div class="ms-2 me-auto">
             <div class="fw-bold" id="subheading"></div>
             <div id="content"></div>
+            <small id="badge-people" class="text-primary mt-1"></small>
           </div>
-          <span id="badge-people" class="badge bg-primary rounded-pill"></span>
+          <div>
+            <button id="btn-delete" class="btn btn-sm btn-danger">X</button>
+          </div>
         </div>
       </div>
     </div>
 
   </template>
   <template id="project-list">
-    <section class="projects mt-3 mb-3">
+    <section class="projects mb-3">
       <div class="card pt-3">
         <div class="card-header bg-transparent border-0 ">
           <h4 class="card-title fw-normal text-center text-uppercase" id="title-projects-list"></h4>
         </div>
         <div class="card-body project-list-card px-3">
           <div class="row " id="project-list-row">
-
           </div>
-
         </div>
       </div>
     </section>
