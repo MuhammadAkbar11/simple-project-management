@@ -256,7 +256,10 @@ class ProjectItem
   }
 
   @AutoBind
-  dragStartHandler(_event: DragEvent): void {}
+  dragStartHandler(event: DragEvent): void {
+    event.dataTransfer!.setData("text/plain", this.project.id);
+    event.dataTransfer!.effectAllowed = "move";
+  }
 
   @AutoBind
   dragEndHandler(event: DragEvent): void {
@@ -299,14 +302,19 @@ class ProjectList
   }
 
   @AutoBind
-  dragOverHandler(_event: DragEvent): void {
-    const listProjectCard = this.element.querySelector(
-      `.project-list-card`
-    )! as HTMLDivElement;
-    listProjectCard.classList.add("droppable");
+  dragOverHandler(event: DragEvent): void {
+    if (event.dataTransfer && event.dataTransfer.types[0] === "text/plain") {
+      event.preventDefault();
+      const listProjectCard = this.element.querySelector(
+        `.project-list-card`
+      )! as HTMLDivElement;
+      listProjectCard.classList.add("droppable");
+    }
   }
   @AutoBind
-  dropHandler(_event: DragEvent): void {}
+  dropHandler(event: DragEvent): void {
+    console.log(event.dataTransfer!.getData("text/plain"));
+  }
   @AutoBind
   dragLeaveHander(_event: DragEvent): void {
     const listProjectCard = this.element.querySelector(
