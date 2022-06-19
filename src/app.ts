@@ -3,6 +3,23 @@ enum ProjectStatus {
   Finished,
 }
 
+const initProjects = [
+  {
+    id: "1",
+    title: "Dummy",
+    description: "Dummy Description",
+    people: 3,
+    status: ProjectStatus.Active,
+  },
+  {
+    id: "2",
+    title: "Dummy End",
+    description: "Dummy End Description",
+    people: 6,
+    status: ProjectStatus.Finished,
+  },
+];
+
 class Project {
   constructor(
     public id: string,
@@ -24,11 +41,29 @@ class State<ST> {
 }
 
 class ProjectState extends State<Project> {
-  private projects: Project[] = [];
+  private projects: Project[] = [...initProjects];
   private static instance: ProjectState;
 
   private constructor() {
     super();
+    this.initDefaultState();
+  }
+
+  private initDefaultState() {
+    for (const initPrj of initProjects) {
+      if (initPrj instanceof Project === false) {
+        const indexOf = this.projects.findIndex(el => el.id === initPrj.id);
+        const transformToProject = new Project(
+          initPrj.id.toString(),
+          initPrj.title,
+          initPrj.description,
+          initPrj.people,
+          initPrj.status
+        );
+
+        this.projects[indexOf] = transformToProject;
+      }
+    }
   }
 
   static getInstance() {
@@ -52,6 +87,10 @@ class ProjectState extends State<Project> {
     for (const listenersFn of this.listeners) {
       listenersFn(this.projects.slice());
     }
+  }
+
+  public getProjects() {
+    return this.projects;
   }
 }
 
@@ -224,9 +263,9 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
     });
     this.type = type;
     this.assignedProjects = [];
-
     this.configure();
     this.render();
+    this.renderProjects();
   }
 
   renderProjects() {
@@ -234,22 +273,22 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
       `#${this.type}-projects-list`
     )! as HTMLUListElement;
     listProjectRow.innerHTML = "";
-
-    for (const prjItem of this.assignedProjects) {
-      new ProjectItem(listProjectRow.id, prjItem);
+    const relevantProjects = projectState.getProjects().filter(prj => {
+      if (this.type === "active") {
+        return prj.status === ProjectStatus.Active;
+      }
+      return prj.status === ProjectStatus.Finished;
+    });
+    this.assignedProjects = relevantProjects;
+    for (const project of this.assignedProjects) {
+      if (!!project) {
+        new ProjectItem(listProjectRow.id, project);
+      }
     }
   }
 
   configure() {
-    projectState.addListener((projects: Project[]) => {
-      const relevantProjects = projects.filter(prj => {
-        if (this.type === "active") {
-          return prj.status === ProjectStatus.Active;
-        }
-        return prj.status === ProjectStatus.Finished;
-      });
-      this.assignedProjects = relevantProjects;
-
+    projectState.addListener((_projects: Project[]) => {
       this.renderProjects();
     });
   }
