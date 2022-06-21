@@ -24,10 +24,17 @@ const initProjects = [
   },
   {
     id: "2",
+    title: "Dummy 2 ",
+    description: "Dummy Description 2",
+    people: 4,
+    status: ProjectStatus.Active,
+  },
+  {
+    id: "3",
     title: "Dummy End",
     description: "Dummy End Description",
     people: 6,
-    status: ProjectStatus.Finished,
+    status: ProjectStatus.Active,
   },
 ];
 
@@ -108,6 +115,12 @@ class ProjectState extends State<Project> {
       selectedProject.status = newStatus;
       this.updateListeners();
     }
+  }
+
+  deleteProject(projectId: string) {
+    const updatedProjects = this.projects.filter(prj => prj.id !== projectId);
+    this.projects = updatedProjects;
+    this.updateListeners();
   }
 
   private updateListeners() {
@@ -248,6 +261,7 @@ class ProjectItem
   extends Component<HTMLDivElement, HTMLElement>
   implements Draggable
 {
+  btnDelete: HTMLButtonElement;
   private project: Project;
 
   get persons() {
@@ -266,6 +280,9 @@ class ProjectItem
       newElementId: `project-col-${project.id}`,
     });
     this.project = project;
+    this.btnDelete = this.element.querySelector(
+      "#btn-delete"
+    )! as HTMLButtonElement;
     this.configure();
     this.render();
   }
@@ -278,12 +295,18 @@ class ProjectItem
 
   @AutoBind
   dragEndHandler(_event: DragEvent): void {
-    console.log("DragEnd");
+    console.log(this.project);
+  }
+
+  @AutoBind
+  deleteItemHandler(_event: MouseEvent) {
+    projectState.deleteProject(this.project.id);
   }
 
   configure() {
     this.element.addEventListener("dragstart", this.dragStartHandler);
     this.element.addEventListener("dragend", this.dragEndHandler);
+    this.btnDelete.addEventListener("click", this.deleteItemHandler);
   }
 
   render() {

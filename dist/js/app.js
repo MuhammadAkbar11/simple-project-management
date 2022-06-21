@@ -31,10 +31,17 @@ const initProjects = [
     },
     {
         id: "2",
+        title: "Dummy 2 ",
+        description: "Dummy Description 2",
+        people: 4,
+        status: ProjectStatus.Active,
+    },
+    {
+        id: "3",
         title: "Dummy End",
         description: "Dummy End Description",
         people: 6,
-        status: ProjectStatus.Finished,
+        status: ProjectStatus.Active,
     },
 ];
 class Project {
@@ -91,6 +98,11 @@ class ProjectState extends State {
             selectedProject.status = newStatus;
             this.updateListeners();
         }
+    }
+    deleteProject(projectId) {
+        const updatedProjects = this.projects.filter(prj => prj.id !== projectId);
+        this.projects = updatedProjects;
+        this.updateListeners();
     }
     updateListeners() {
         for (const listenersFn of this.listeners) {
@@ -177,6 +189,7 @@ class ProjectItem extends Component {
             newElementId: `project-col-${project.id}`,
         });
         this.project = project;
+        this.btnDelete = this.element.querySelector("#btn-delete");
         this.configure();
         this.render();
     }
@@ -193,11 +206,15 @@ class ProjectItem extends Component {
         event.dataTransfer.effectAllowed = "move";
     }
     dragEndHandler(_event) {
-        console.log("DragEnd");
+        console.log(this.project);
+    }
+    deleteItemHandler(_event) {
+        projectState.deleteProject(this.project.id);
     }
     configure() {
         this.element.addEventListener("dragstart", this.dragStartHandler);
         this.element.addEventListener("dragend", this.dragEndHandler);
+        this.btnDelete.addEventListener("click", this.deleteItemHandler);
     }
     render() {
         this.element.draggable = true;
@@ -213,6 +230,9 @@ __decorate([
 __decorate([
     AutoBind
 ], ProjectItem.prototype, "dragEndHandler", null);
+__decorate([
+    AutoBind
+], ProjectItem.prototype, "deleteItemHandler", null);
 class ProjectList extends Component {
     constructor(type) {
         super({
