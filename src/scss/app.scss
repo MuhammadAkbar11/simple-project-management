@@ -47,3 +47,11 @@ $spacers: (
   background-color: $gray-100;
 }
 
+.project-col {
+  transition: .3s all ease-in-out;
+}
+
+.over {
+  transition: 0.2s all ;
+  transform: scale(0.98);
+}

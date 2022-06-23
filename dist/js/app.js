@@ -28,6 +28,7 @@ const initProjects = [
         description: "Dummy Description",
         people: 3,
         status: ProjectStatus.Active,
+        order: 1,
     },
     {
         id: "2",
@@ -35,6 +36,7 @@ const initProjects = [
         description: "Dummy Description 2",
         people: 4,
         status: ProjectStatus.Active,
+        order: 2,
     },
     {
         id: "3",
@@ -42,15 +44,17 @@ const initProjects = [
         description: "Dummy End Description",
         people: 6,
         status: ProjectStatus.Active,
+        order: 3,
     },
 ];
 class Project {
-    constructor(id, title, description, people, status) {
+    constructor(id, title, description, people, status, order) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.people = people;
         this.status = status;
+        this.order = order;
     }
 }
 class State {
@@ -64,20 +68,11 @@ class State {
 class ProjectState extends State {
     constructor() {
         super();
+        this.projectActiveId = null;
         this.projectIdInc = 1;
         this.projects = [];
         this.projects = [...initProjects];
         this.initDefaultState();
-    }
-    initDefaultState() {
-        for (const initPrj of initProjects) {
-            if (initPrj instanceof Project === false) {
-                const indexOf = this.projects.findIndex(el => el.id === initPrj.id);
-                const transformToProject = new Project(this.projectIdInc.toString(), initPrj.title, initPrj.description, initPrj.people, initPrj.status);
-                this.projectIdInc++ + 1;
-                this.projects[indexOf] = transformToProject;
-            }
-        }
     }
     static getInstance() {
         if (this.instance) {
@@ -86,14 +81,33 @@ class ProjectState extends State {
         this.instance = new ProjectState();
         return this.instance;
     }
+    initDefaultState() {
+        for (const initPrj of initProjects) {
+            if (initPrj instanceof Project === false) {
+                const indexOf = this.projects.findIndex(el => el.id === initPrj.id);
+                const transformToProject = new Project(this.projectIdInc.toString(), initPrj.title, initPrj.description, initPrj.people, initPrj.status, this.projectIdInc);
+                this.projectIdInc++ + 1;
+                this.projects[indexOf] = transformToProject;
+            }
+        }
+    }
+    setProjectActiveId(id) {
+        this.projectActiveId = id;
+    }
+    getProjectActiveId() {
+        return this.projectActiveId;
+    }
     addProject(title, description, numOfPeople) {
-        const newProject = new Project(this.projectIdInc.toString(), title, description, numOfPeople, ProjectStatus.Active);
+        const newProject = new Project(this.projectIdInc.toString(), title, description, numOfPeople, ProjectStatus.Active, this.projectIdInc);
         this.projects.push(newProject);
         this.projectIdInc++ + 1;
         this.updateListeners();
     }
+    findOne(projectId) {
+        return this.projects.find(prj => prj.id === projectId);
+    }
     moveProject(projectId, newStatus) {
-        const selectedProject = this.projects.find(prj => prj.id === projectId);
+        const selectedProject = this.findOne(projectId);
         if (selectedProject && selectedProject.status !== newStatus) {
             selectedProject.status = newStatus;
             this.updateListeners();
@@ -102,6 +116,15 @@ class ProjectState extends State {
     deleteProject(projectId) {
         const updatedProjects = this.projects.filter(prj => prj.id !== projectId);
         this.projects = updatedProjects;
+        this.updateListeners();
+    }
+    swapProject(fromId, toId) {
+        const fromIndex = this.projects.findIndex(el => el.id === fromId);
+        const toIndex = this.projects.findIndex(el => el.id === toId);
+        const fromOrder = this.projects[fromIndex].order;
+        const toOrder = this.projects[toIndex].order;
+        this.projects[fromIndex].order = +toOrder;
+        this.projects[toIndex].order = +fromOrder;
         this.updateListeners();
     }
     updateListeners() {
@@ -202,11 +225,28 @@ class ProjectItem extends Component {
         }
     }
     dragStartHandler(event) {
+        projectState.setProjectActiveId(this.project.id);
         event.dataTransfer.setData("text/plain", this.project.id);
         event.dataTransfer.effectAllowed = "move";
     }
     dragEndHandler(_event) {
-        console.log(this.project);
+        console.log("END", this.project.title);
+    }
+    dragEnterHandler(_event) {
+        if (this.project.id !== projectState.getProjectActiveId()) {
+            this.element.classList.add("over");
+            // console.log(event.target.c)
+        }
+    }
+    dragLeaveHandler(_event) {
+        this.element.classList.remove("over");
+    }
+    dragDropHandler(_event) {
+        projectState.swapProject(projectState.getProjectActiveId(), this.project.id);
+        this.element.classList.remove("bg-light");
+    }
+    dragDragOver(event) {
+        event.preventDefault();
     }
     deleteItemHandler(_event) {
         projectState.deleteProject(this.project.id);
@@ -214,6 +254,10 @@ class ProjectItem extends Component {
     configure() {
         this.element.addEventListener("dragstart", this.dragStartHandler);
         this.element.addEventListener("dragend", this.dragEndHandler);
+        this.element.addEventListener("dragenter", this.dragEnterHandler);
+        this.element.addEventListener("dragleave", this.dragLeaveHandler);
+        this.element.addEventListener("dragover", this.dragDragOver);
+        this.element.addEventListener("drop", this.dragDropHandler);
         this.btnDelete.addEventListener("click", this.deleteItemHandler);
     }
     render() {
@@ -230,6 +274,18 @@ __decorate([
 __decorate([
     AutoBind
 ], ProjectItem.prototype, "dragEndHandler", null);
+__decorate([
+    AutoBind
+], ProjectItem.prototype, "dragEnterHandler", null);
+__decorate([
+    AutoBind
+], ProjectItem.prototype, "dragLeaveHandler", null);
+__decorate([
+    AutoBind
+], ProjectItem.prototype, "dragDropHandler", null);
+__decorate([
+    AutoBind
+], ProjectItem.prototype, "dragDragOver", null);
 __decorate([
     AutoBind
 ], ProjectItem.prototype, "deleteItemHandler", null);
@@ -268,14 +324,17 @@ class ProjectList extends Component {
     renderProjects() {
         const listProjectRow = this.element.querySelector(`#${this.type}-projects-list`);
         listProjectRow.innerHTML = "";
-        const relevantProjects = projectState.getProjects().filter(prj => {
+        const relevantProjects = projectState
+            .getProjects()
+            .filter(prj => {
             if (this.type === "active") {
                 return prj.status === ProjectStatus.Active;
             }
             return prj.status === ProjectStatus.Finished;
-        });
+        })
+            .sort((a, b) => Number(b.order) - Number(a.order));
         this.assignedProjects = relevantProjects;
-        console.log(projectState.getProjects());
+        console.log(this.assignedProjects);
         for (const project of this.assignedProjects) {
             if (!!project) {
                 new ProjectItem(listProjectRow.id, project);
